@@ -1,7 +1,8 @@
-import "./globals.css";
-import AuthProvider from "@/context/AuthContext";
+import { ThemeProvider } from "next-themes";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AuthProvider from "@/context/AuthContext"; // Assuming you have this
+import "./globals.css";
 
 export const metadata = {
   title: "EminiBazar",
@@ -10,14 +11,18 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col">
+    // suppressHydrationWarning is REQUIRED here when using next-themes
+    <html lang="en" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
         <AuthProvider>
-          <Navbar />
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Navbar />
 
-          <main className="flex-grow">{children}</main>
+            
+            <main className="grow">{children}</main>
 
-          <Footer />
+            <Footer />
+          </ThemeProvider>
         </AuthProvider>
       </body>
     </html>
