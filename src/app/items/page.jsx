@@ -1,47 +1,51 @@
 "use client";
 
-import { useState } from "react";
-import { plants } from "@/data/plants";
+import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
 
 export default function ItemsPage() {
+  const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [priceFilter, setPriceFilter] = useState("");
 
-  const filteredPlants = plants.filter((plant) => {
-    const matchesSearch = plant.title
-      .toLowerCase()
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
+  }, []);
+
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.title
+      ?.toLowerCase()
       .includes(search.toLowerCase());
 
-    const matchesCategory = category === "" || plant.category === category;
+    const matchesCategory = category === "" || product.category === category;
 
     const matchesPrice =
       priceFilter === ""
         ? true
         : priceFilter === "low"
-          ? plant.price < 400
-          : plant.price >= 400;
+          ? product.price < 500
+          : product.price >= 500;
 
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
+    <div className="max-w-7xl mx-auto py-10 px-4">
       <h1 className="text-4xl font-bold mb-8">All Plants</h1>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-8">
+      <div className="flex gap-4 mb-8 flex-wrap">
         <input
           type="text"
           placeholder="Search plants..."
-          className="border p-3 rounded-lg flex-1"
-          value={search}
+          className="border p-3 rounded-lg"
           onChange={(e) => setSearch(e.target.value)}
         />
 
         <select
           className="border p-3 rounded-lg"
-          value={category}
           onChange={(e) => setCategory(e.target.value)}
         >
           <option value="">All Categories</option>
@@ -54,26 +58,19 @@ export default function ItemsPage() {
 
         <select
           className="border p-3 rounded-lg"
-          value={priceFilter}
           onChange={(e) => setPriceFilter(e.target.value)}
         >
           <option value="">All Prices</option>
-          <option value="low">Below 400</option>
-          <option value="high">Above 400</option>
+          <option value="low">Below 500</option>
+          <option value="high">Above 500</option>
         </select>
       </div>
 
-      {filteredPlants.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-lg text-gray-500">No plants found.</p>
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-3 gap-6">
-          {filteredPlants.map((plant) => (
-            <ProductCard key={plant.id} plant={plant} />
-          ))}
-        </div>
-      )}
+      <div className="grid md:grid-cols-3 gap-6">
+        {filteredProducts.map((product) => (
+          <ProductCard key={product._id} plant={product} />
+        ))}
+      </div>
     </div>
   );
 }

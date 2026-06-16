@@ -1,33 +1,41 @@
 # EminiBazar
 
-A modern plant marketplace built with Next.js and Firebase Authentication.
+A modern plant and gardening marketplace built with Next.js App Router, Firebase Authentication, MongoDB, and Tailwind CSS.
 
 ## Features
 
 - Firebase Authentication
 - Protected Routes
-- Plant Listing
-- Search Functionality
-- Category Filter
-- Price Filter
-- Dynamic Plant Details
 - Add Product
-- Manage Product
+- Manage Products
+- Update Product
+- Delete Product
+- Product Details Page
+- Search & Filter
+- MongoDB Database
 - Responsive Design
 
 ## Routes
 
 /
+/about
 /items
 /items/[id]
 /items/add
 /items/manage
-/about
+/items/update/[id]
 /login
 /register
 
 ## Technologies
 
-- Next.js App Router
-- Firebase
+- Next.js 16
+- MongoDB Atlas
+- Firebase Authentication
 - Tailwind CSS
+- Vercel
+
+## Installation
+
+npm install
+npm run dev
